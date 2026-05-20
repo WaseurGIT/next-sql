@@ -13,7 +13,7 @@ interface Products {
 
 const Page = () => {
   const [products, setProducts] = useState<Products[]>([]);
-  
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/products")
@@ -39,7 +39,9 @@ const Page = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">All Products</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">
+              All Products
+            </h1>
             <p className="text-gray-600">Discover our collection</p>
           </div>
           <Link
@@ -72,13 +74,21 @@ const Page = () => {
                     ${product.price.toFixed(2)}
                   </span>
                 </div>
-                <button
-                  onClick={() => handleDelete(product.id)}
-                  className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition-colors"
-                >
-                  {/* <Trash2 className="w-4 h-4" /> */}
-                  Delete
-                </button>
+                <div className="flex items-center justify-between gap-2 w-full">
+                  <Link
+                    href={`/AllProducts/${product.id}`}
+                    className="text-indigo-600 hover:text-indigo-800 font-semibold border-2 border-indigo-600 hover:border-indigo-800 py-2 px-4 rounded-lg transition-colors w-full text-center"
+                  >
+                    View Details
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(product.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition-colors w-full text-center"
+                  >
+                    {/* <Trash2 className="w-4 h-4" /> */}
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
