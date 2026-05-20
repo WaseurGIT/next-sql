@@ -3,7 +3,6 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 // import { ArrowLeft, ShoppingCart, Loader } from "lucide-react";
 
 interface Product {
@@ -13,9 +12,8 @@ interface Product {
   image: string;
 }
 
-const Page = () => {
-  const params = useParams();
-  const id = params?.id as string;
+const Page = ({ params }: { params: { id: string } }) => {
+  const id = params.id;
   const [product, setProduct] = React.useState<Product | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -50,9 +48,7 @@ const Page = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-          <p className="text-gray-600 text-lg mb-6">
-            {error || "Product not found"}
-          </p>
+          <p className="text-gray-600 text-lg mb-6">{error || "Product not found"}</p>
           <Link
             href="/AllProducts"
             className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
@@ -77,7 +73,7 @@ const Page = () => {
         </Link>
 
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             <div className="flex items-center justify-center">
               <div className="relative w-full max-w-md h-96 bg-gray-200 rounded-xl overflow-hidden">
                 <img
@@ -89,25 +85,36 @@ const Page = () => {
             </div>
 
             <div className="flex flex-col justify-center">
-              <h1 className="text-2xl font-bold text-gray-800 mb-4">
+              <h1 className="text-4xl font-bold text-gray-800 mb-4">
                 {product.name}
               </h1>
-
+              
               <div className="mb-8">
-                <p className="text-gray-600 text-sm mb-2">
-                  Price{" "}
-                  <span className="font-bold text-2xl text-indigo-600">${product.price.toFixed(2)}</span>
+                <p className="text-gray-600 text-sm mb-2">Price</p>
+                <p className="text-5xl font-bold text-indigo-600">
+                  ${product.price.toFixed(2)}
                 </p>
               </div>
 
+              <div className="mb-8">
+                <p className="text-gray-600 text-sm mb-2">Product ID</p>
+                <p className="text-gray-800 font-semibold">#{product.id}</p>
+              </div>
+
               <div className="flex gap-4">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition-colors shadow-md hover:shadow-lg">
+                <button className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg">
                   {/* <ShoppingCart className="w-5 h-5" /> */}
                   Add to Cart
                 </button>
-                <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg transition-colors">
+                <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-4 rounded-lg transition-colors">
                   Save for Later
                 </button>
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <p className="text-gray-600 text-sm">
+                  Share this product with your friends and family to discover great deals!
+                </p>
               </div>
             </div>
           </div>

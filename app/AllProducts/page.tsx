@@ -3,6 +3,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { MdAdd, MdVisibility, MdEdit, MdDelete } from "react-icons/md";
 
 interface Products {
   id: number;
@@ -48,6 +49,7 @@ const Page = () => {
             href="/AddProduct"
             className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg"
           >
+            <MdAdd className="w-5 h-5" />
             Add Product
           </Link>
         </div>
@@ -77,15 +79,23 @@ const Page = () => {
                 <div className="flex items-center justify-between gap-2 w-full">
                   <Link
                     href={`/AllProducts/${product.id}`}
-                    className="text-indigo-600 hover:text-indigo-800 font-semibold border-2 border-indigo-600 hover:border-indigo-800 py-2 px-4 rounded-lg transition-colors w-full text-center"
+                    className="flex items-center justify-center gap-2 text-indigo-600 hover:text-indigo-800 font-semibold border-2 border-indigo-600 hover:border-indigo-800 py-2 px-4 rounded-lg transition-colors w-full"
                   >
-                    View Details
+                    <MdVisibility className="w-4 h-4" />
+                    View
+                  </Link>
+                  <Link
+                    href={`/AllProducts/${product.id}/update`}
+                    className="flex items-center justify-center gap-2 text-indigo-600 hover:text-indigo-800 font-semibold border-2 border-indigo-600 hover:border-indigo-800 py-2 px-4 rounded-lg transition-colors w-full"
+                  >
+                    <MdEdit className="w-4 h-4" />
+                    Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(product.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition-colors w-full text-center"
+                    className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors w-full"
                   >
-                    {/* <Trash2 className="w-4 h-4" /> */}
+                    <MdDelete className="w-4 h-4" />
                     Delete
                   </button>
                 </div>
