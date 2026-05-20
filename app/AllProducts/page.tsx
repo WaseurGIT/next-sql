@@ -25,6 +25,15 @@ const Page = () => {
       });
   }, []);
 
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:5000/products/${id}`);
+      setProducts(products.filter((product) => product.id !== id));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -37,7 +46,6 @@ const Page = () => {
             href="/AddProduct"
             className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg"
           >
-            {/* <Plus className="w-5 h-5" /> */}
             Add Product
           </Link>
         </div>
@@ -59,14 +67,18 @@ const Page = () => {
                 <h2 className="text-lg font-bold text-gray-800 mb-2 truncate">
                   {product.name}
                 </h2>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-4">
                   <span className="text-2xl font-bold text-indigo-600">
                     ${product.price.toFixed(2)}
                   </span>
-                  {/* <button className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors">
-                    <ShoppingCart className="w-5 h-5" />
-                  </button> */}
                 </div>
+                <button
+                  onClick={() => handleDelete(product.id)}
+                  className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition-colors"
+                >
+                  {/* <Trash2 className="w-4 h-4" /> */}
+                  Delete
+                </button>
               </div>
             </div>
           ))}
@@ -74,7 +86,6 @@ const Page = () => {
 
         {products.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20">
-            {/* <ShoppingCart className="w-16 h-16 text-gray-400 mb-4" /> */}
             <p className="text-gray-600 text-lg">No products available</p>
           </div>
         )}
