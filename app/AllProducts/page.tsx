@@ -3,7 +3,10 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { MdAdd, MdVisibility, MdEdit, MdDelete } from "react-icons/md";
+import { MdAdd, MdVisibility, MdEdit, MdDelete, MdAccountCircle, MdLogout } from "react-icons/md";
+import { useAuth } from "../AuthProvider/page";
+import { useRouter } from "next/navigation";
+
 
 interface Products {
   id: number;
@@ -13,7 +16,10 @@ interface Products {
 }
 
 const Page = () => {
+  const router = useRouter();
+  const {user, logout} = useAuth();
   const [products, setProducts] = useState<Products[]>([]);
+
 
   useEffect(() => {
     axios
@@ -35,6 +41,11 @@ const Page = () => {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    router.push("/");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -45,13 +56,39 @@ const Page = () => {
             </h1>
             <p className="text-gray-600">Discover our collection</p>
           </div>
-          <Link
-            href="/AddProduct"
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg"
-          >
-            <MdAdd className="w-5 h-5" />
-            Add Product
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/AddProduct"
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              <MdAdd className="w-5 h-5" />
+              Add Product
+            </Link>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg">
+                  <MdAccountCircle className="w-6 h-6 text-indigo-600" />
+                  <span className="text-sm font-medium text-gray-700 truncate max-w-xs">
+                    {user.email}
+                  </span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors shadow-md hover:shadow-lg"
+                >
+                  <MdLogout className="w-5 h-5" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/Login"
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg"
+              >
+                Login
+              </Link>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
